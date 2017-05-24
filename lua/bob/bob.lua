@@ -16,14 +16,7 @@ function module.hey(msg)
     return answers[3]
   end
 
-  local is_yell = true
-  for i=1,#msg do
-    local code = msg:byte(i, i)
-    if code >= 97 and code <= 122 then
-      is_yell = false
-    end
-  end
-  if is_yell then
+  if msg:upper() == msg then
     return answers[2]
   end
 
