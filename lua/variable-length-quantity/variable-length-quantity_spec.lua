@@ -1,4 +1,4 @@
-local vlq = require 'variable-length-quantity'
+local vlq = require('variable-length-quantity')
 
 describe('variable-length-quantity', function()
   it('should decode single bytes', function()
