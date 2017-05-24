@@ -1,5 +1,5 @@
 function raindrops(n)
-  rt = ''
+  local rt = ''
 
   if n % 3 == 0 then
     rt = rt .. 'Pling'
