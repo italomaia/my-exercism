@@ -1,14 +1,9 @@
-
-function count_chars(word)
+local function count_chars(word)
   -- char to char count map
   local rt = {}
   for i=1, #word do
-    chr = word:sub(i, i)
-    if rt[chr] == nil then
-      rt[chr] = 1
-    else
-      rt[chr] = rt[chr] + 1
-    end
+    local chr = word:sub(i, i)
+    rt[chr] = (rt[chr] or 0) + 1
   end
   return rt
 end
@@ -16,11 +11,11 @@ end
 local cls = {}
 
 function cls:new (word)
-  setmetatable({}, self)
   self.__index = self
-  self.word = word
-  self.count = count_chars(word:lower())
-  return self
+  return setmetatable({
+    word = word,
+    count = count_chars(word:lower())
+  }, self)
 end
 
 function cls:match (words)
