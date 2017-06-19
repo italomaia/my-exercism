@@ -1,6 +1,6 @@
-local function flatten (aarray, array)
+local function flatten (nested_array, array)
   array = array or {}
-  for _, v in ipairs(aarray) do
+  for _, v in ipairs(nested_array) do
     if v ~= nil then
       if type(v) == 'table' then
         flatten(v, array)
