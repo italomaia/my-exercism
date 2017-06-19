@@ -1,17 +1,10 @@
-local function inrange(code)
-  return code >= 97 and code <= 122
-end
-
-return function (word)
-  word = word:lower()
-  
+return function (sentence)
   local pangram = {}
-  
-  for i=1, #word do
-    local chr = word:sub(i, i)
-    if inrange(string.byte(chr)) then
-      pangram[chr] = true
-    end
+  local count = 0
+  for chr in string.gmatch(sentence:lower(), "[\97-\122]") do
+    count = count + (pangram[chr] and 0 or 1)
+    pangram[chr] = true
   end
-  return 26 == #word
+
+  return 26 == count
 end
