@@ -27,7 +27,36 @@ function primes (n)
   return table.str(rt)
 end
 
+function factors(num)
+  local rs = {}
+  for i=1, math.floor(num/2) do
+    if num % i == 0 then
+      table.insert(rs, i)
+    end
+  end
+  return rs
+end
+
+function math.sum(nums)
+  local acum = 0
+  for i, v in pairs(nums) do
+    acum = acum + v
+  end
+  return acum
+end
+
+local function aliquot_sum (n)
+  return math.sum(factors(n))
+end
+
+function classify (n)
+  local aliquot_sum = math.sum(factors(n))
+  if aliquot_sum == n then return "perfect" end
+  if aliquot_sum > n then return "abundant" end
+  return "deficient"
+end
+
 return {
-    aliquot_sum = function (n) end,
-    classify = function (n) end
+    aliquot_sum = aliquot_sum,
+    classify = classify
 }
