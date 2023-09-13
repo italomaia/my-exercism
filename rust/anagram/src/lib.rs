@@ -14,7 +14,7 @@ fn char_count(word: String) -> HashMap<char, u32> {
     count
 }
 
-fn is_anagram<'a>(word: &'a str, anagram: &'a str) -> Option<&'a str> {
+fn is_anagram<'a>(word: &String, anagram: &'a str) -> Option<&'a str> {
     let word_count = char_count(word.to_lowercase());
     let anagram_count = char_count(anagram.to_lowercase());
 
@@ -26,9 +26,11 @@ fn is_anagram<'a>(word: &'a str, anagram: &'a str) -> Option<&'a str> {
 }
 
 pub fn anagrams_for<'a>(word: &'a str, possible_anagrams: &'a [&str]) -> HashSet<&'a str> {
-    HashSet::from_iter(possible_anagrams
-      .iter()
-      .map(| anagram | is_anagram(word, anagram))
-      .filter(|v| v.is_some())
-      .map(|v| v.unwrap()))
+  let word_lc = word.to_lowercase();
+
+  HashSet::from_iter(possible_anagrams
+    .iter()
+    .map(| anagram | is_anagram(&word_lc, anagram))
+    .filter(|v| v.is_some())
+    .map(|v| v.unwrap()))
 }
