@@ -1,71 +1,36 @@
-// The code below is a stub. Just enough to satisfy the compiler.
-// In order to pass the tests you can add-to or change any of this code.
+// solution by tokenrove
+
+// macros make this solution quite elegant; just remember
+// you can get a ref to the trait with Self::
+// and things should be fine
 
 #[derive(Debug)]
-pub struct Duration {
-  s: u64,
-}
+pub struct Duration(f64);
 
 impl From<u64> for Duration {
     fn from(s: u64) -> Self {
-        Duration { s }
+        Duration(s as f64)
     }
 }
 
 pub trait Planet {
-    fn years_during(d: &Duration) -> f64 {
-        todo!("convert a duration ({d:?}) to the number of years on this planet for that duration");
-    }
+  fn period() -> f64;
+  fn years_during(d: &Duration) -> f64 {
+    (d.0 as f64) / 31557600.0 / Self::period()
+  }
 }
 
-const EARTH_YEAR:f64 = 60f64 * 60f64 * 24f64 * 365.25;
+macro_rules! planet {
+    ($n:ident, $p:expr) => {
+        pub struct $n; impl Planet for $n { fn period() -> f64 { $p } }
+    };
+}
 
-pub struct Mercury;
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
-
-impl Planet for Mercury {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR / 0.2408467
-  }
-}
-impl Planet for Venus {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR / 0.61519726
-  }
-}
-impl Planet for Earth {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR
-  }
-}
-impl Planet for Mars {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR / 1.8808158
-  }
-}
-impl Planet for Jupiter {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR / 11.862615
-  }
-}
-impl Planet for Saturn {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR / 29.447498
-  }
-}
-impl Planet for Uranus {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR / 84.016846
-  }
-}
-impl Planet for Neptune {
-  fn years_during(d: &Duration) -> f64 {
-    (d.s as f64) / EARTH_YEAR / 164.79132
-  }
-}
+planet!(Mercury, 0.2408467);
+planet!(Venus, 0.61519726);
+planet!(Earth, 1.0);
+planet!(Mars, 1.8808158);
+planet!(Jupiter, 11.862615);
+planet!(Saturn, 29.447498);
+planet!(Uranus, 84.016846);
+planet!(Neptune, 164.79132);
