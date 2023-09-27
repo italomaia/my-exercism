@@ -1,3 +1,9 @@
+// ref: alireza4050
+
+// the idea here is to rely on windows to give us each contiguous slice
+// of size equal to the slice we want to compare against;
+// using a tuple with match + the arg if conditions was quite elegant.
+
 #[derive(Debug, PartialEq, Eq)]
 pub enum Comparison {
     Equal,
@@ -6,42 +12,15 @@ pub enum Comparison {
     Unequal,
 }
 
-fn is_subset<T: PartialEq> (a: &[T], b: &[T]) -> bool {
-  for i in 0..=(b.len() - a.len()) {
-    if a == &b[i..(i + a.len())] {
-      return true
-    }
-  }
-  false
-}
-
 pub fn sublist<T: PartialEq>(a: &[T], b: &[T]) -> Comparison {
-  if a.len() == 0 {
-    return Comparison::Sublist;
-  }
+  use Comparison::*;
 
-  if b.len() == 0 {
-    return Comparison::Superlist;
-  }
-
-  match a.len().cmp(&b.len()) {
-    std::cmp::Ordering::Less => {
-      match is_subset(a, b) {
-        true  => Comparison::Sublist,
-        _     => Comparison::Unequal
-      }
-    },
-    std::cmp::Ordering::Greater => {
-      match is_subset(b, a) {
-        true  => Comparison::Superlist,
-        _     => Comparison::Unequal
-      }
-    },
-    _ => {
-      match a.eq(b) {
-        true  => Comparison::Equal,
-        false => Comparison::Unequal
-      }
-    },
+  match (a.len(), b.len()) {
+    (0, 0) => Equal,
+    (0, _) => Sublist,
+    (_, 0) => Superlist,
+    (m, n) if m > n => if a.windows(n).any(|w| w == b) {Superlist} else {Unequal},
+    (m, n) if m < n => if b.windows(m).any(|w| w == a) {Sublist} else {Unequal},
+    (_, _) => if a == b {Equal} else {Unequal}
   }
 }
