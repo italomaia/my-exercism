@@ -6,7 +6,7 @@ from collections import Counter
 from re import split
 
 
-def word_count(sentence):
+def word_count(sentence: str):
     """Returns a dict of words and their number of occurences"""
     words = split(r'[\W_]+', sentence.lower())
     valid_words = filter(bool, words)
